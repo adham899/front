@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب العمر</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="date"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        p {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>حاسبة العمر</h1>
+        <label for="birthdate">أدخل تاريخ الميلاد:</label>
+        <input type="date" id="birthdate">
+        <button onclick="calculateAge()">احسب العمر</button>
+        <p id="result"></p>
+    </div>
+    <script>
+        function calculateAge() {
+            const birthdate = document.getElementById('birthdate').value;
+            if (birthdate === "") {
+                document.getElementById('result').textContent = "الرجاء إدخال تاريخ الميلاد.";
+                return;
+            }
+
+            const birthDate = new Date(birthdate);
+            const today = new Date();
+
+            let years = today.getFullYear() - birthDate.getFullYear();
+            let months = today.getMonth() - birthDate.getMonth();
+            let days = today.getDate() - birthDate.getDate();
+            let hours = today.getHours();
+            let minutes = today.getMinutes();
+            let seconds = today.getSeconds();
+
+            if (months < 0 || (months === 0 && days < 0)) {
+                years--;
+                months += 12;
+            }
+
+            if (days < 0) {
+                months--;
+                const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+
+            const birthTime = birthDate.getTime();
+            const currentTime = today.getTime();
+            const timeDifference = currentTime - birthTime;
+
+            const totalMinutes = Math.floor(timeDifference / (1000 * 60));
+            const totalSeconds = Math.floor(timeDifference / 1000);
+
+            document.getElementById('result').innerHTML = 
+                `عمرك هو ${years} سنة، و${months} شهر، و${days} يوم.<br>` +
+                `عشت ${totalMinutes} دقيقة، و${totalSeconds} ثانية.`;
+        }
+    </script>
+</body>
+</html>
